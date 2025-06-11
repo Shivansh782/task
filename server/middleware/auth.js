@@ -26,5 +26,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-// Use ES module export
 export default auth;

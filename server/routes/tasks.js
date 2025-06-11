@@ -3,10 +3,6 @@ import auth from "../middleware/auth.js";
 import Task from "../models/Task.js";
 
 const router = express.Router();
-
-// @route   GET /api/tasks
-// @desc    Get all tasks for the authenticated user
-// @access  Private
 router.get("/", auth, async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user._id }).sort({
@@ -19,9 +15,6 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// @route   POST /api/tasks
-// @desc    Create a new task
-// @access  Private
 router.post("/", auth, async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -44,9 +37,6 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// @route   PUT /api/tasks/:id
-// @desc    Update a task
-// @access  Private
 router.put("/:id", auth, async (req, res) => {
   try {
     const { title, description, completed } = req.body;
@@ -57,14 +47,12 @@ router.put("/:id", auth, async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // Check if the task belongs to the authenticated user
     if (task.user.toString() !== req.user._id.toString()) {
       return res
         .status(403)
         .json({ message: "Not authorized to update this task" });
     }
 
-    // Update task
     task.title = title !== undefined ? title : task.title;
     task.description =
       description !== undefined ? description : task.description;
@@ -82,9 +70,6 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
-// @route   DELETE /api/tasks/:id
-// @desc    Delete a task
-// @access  Private
 router.delete("/:id", auth, async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -93,7 +78,6 @@ router.delete("/:id", auth, async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // Check if the task belongs to the authenticated user
     if (task.user.toString() !== req.user._id.toString()) {
       return res
         .status(403)
