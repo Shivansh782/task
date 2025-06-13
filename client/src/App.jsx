@@ -45,9 +45,9 @@ function App() {
           <Route
             path="/"
             element={<Navigate to={user ? "/dashboard" : "/login"} />}
-          />
+          /> 
         </Routes>
-      </div>
+      </div> 
     </Router>
   );
 }
